@@ -1,0 +1,9 @@
+**/__pycache__
+**/*.pyc
+.venv-mvp
+.git
+frontend/node_modules
+storage
+*.3dm
+.env
+node_modules

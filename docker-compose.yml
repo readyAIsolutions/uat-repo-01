@@ -1,0 +1,25 @@
+# MARLIN — full stack. Copy onto the Dell and run:  docker compose up -d
+# Rhino.Compute + Rhino 8 stay INSTALLED ON WINDOWS (not containerised);
+# MARLIN reaches them over the host LAN via MARLIN_RHINO_URL.
+services:
+  marlin-api:
+    build: .
+    image: marlin-rhino-mvp:latest
+    container_name: marlin-api
+    env_file: [.env]
+    environment:
+      RHINO_COMPUTE_URL: ${MARLIN_RHINO_URL:-http://host.docker.internal:6500}
+      MARLIN_STORAGE_DIR: /data/storage
+    ports: ["8011:8011"]
+    volumes: ["marlin-data:/data"]
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8011/health',timeout=3).status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  marlin-data:

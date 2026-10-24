@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Env & secrets
+.env
+*.env
+!.env.example
+
+# Logs & runtime
+*.log
+storage/
+*.3dm.tmp
+*.png.tmp
+
+# OS
+.DS_Store
+Thumbs.db

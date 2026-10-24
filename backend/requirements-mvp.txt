@@ -1,0 +1,12 @@
+# MARLIN Rhino MVP — Section 1 runtime requirements
+# Minimal, pinned set. Isolated from the legacy backend/requirements.txt.
+# Scope: FastAPI app factory + config + logging + Rhino service contract only.
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+pydantic-settings==2.5.2
+httpx==0.27.2
+# Compatible with the pinned Starlette/TestClient generation.
+starlette==0.38.6
+anyio==4.6.2.post1
+rhino3dm==8.35.0  # real .3dm export (Section 9)

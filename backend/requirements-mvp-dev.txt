@@ -1,0 +1,6 @@
+# MARLIN Rhino MVP — Section 1 test/dev requirements (isolated)
+# Installs the runtime set plus the test tooling. Does NOT touch .venv-prod.
+-r requirements-mvp.txt
+
+pytest==8.3.3
+pytest-asyncio==0.24.0
