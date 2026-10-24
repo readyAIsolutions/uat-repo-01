@@ -6,9 +6,9 @@ venv/
 *.egg-info/
 .pytest_cache/
 
-# Env & secrets
+# Env & secrets (keep the tracked example)
 .env
-*.env
+.env.*
 !.env.example
 
 # Logs & runtime
