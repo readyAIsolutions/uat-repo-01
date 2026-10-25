@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Archive version="3" type="GH_Archive">
+  <Object type="GH_Component" name="Number" InstanceGuid="a1b2c3d4-1111-2222-3333-444455556666">
+    <Fields>
+      <Name>Width</Name>
+      <NickName>width</NickName>
+      <Description>Box width (m)</Description>
+      <Category>Params</Category>
+      <SubCategory>Input</SubCategory>
+      <MutualData>
+        <Access>Item</Access>
+        <TypeHint>System.Double</TypeHint>
+        <Optional>False</Optional>
+        <PersistentData>
+          <Data xmlns:d="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+            <d:double>5.5</d:double>
+          </Data>
+        </PersistentData>
+      </MutualData>
+    </Fields>
+  </Object>
+  <Object type="GH_Component" name="Number" InstanceGuid="b2c3d4e5-2222-3333-4444-555566667777">
+    <Fields>
+      <Name>Length</Name>
+      <NickName>length</NickName>
+      <Description>Box length (m)</Description>
+      <Category>Params</Category>
+      <SubCategory>Input</SubCategory>
+      <MutualData>
+        <Access>Item</Access>
+        <TypeHint>System.Double</TypeHint>
+        <Optional>False</Optional>
+        <PersistentData>
+          <Data xmlns:d="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+            <d:double>20.0</d:double>
+          </Data>
+        </PersistentData>
+      </MutualData>
+    </Fields>
+  </Object>
+  <Object type="GH_Component" name="Number" InstanceGuid="c3d4e5f6-3333-4444-5555-666677778888">
+    <Fields>
+      <Name>Height</Name>
+      <NickName>height</NickName>
+      <Description>Box height (m)</Description>
+      <Category>Params</Category>
+      <SubCategory>Input</SubCategory>
+      <MutualData>
+        <Access>Item</Access>
+        <TypeHint>System.Double</TypeHint>
+        <Optional>False</Optional>
+        <PersistentData>
+          <Data xmlns:d="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+            <d:double>2.4</d:double>
+          </Data>
+        </PersistentData>
+      </MutualData>
+    </Fields>
+  </Object>
+  <Object type="GH_Component" name="Box" InstanceGuid="d4e5f6a7-4444-5555-6666-777788889999">
+    <Fields>
+      <Name>Box</Name>
+      <NickName>Box</NickName>
+      <Description>Construct a box from base plane and dimensions</Description>
+      <Category>Surface</Category>
+      <SubCategory>Primitive</SubCategory>
+      <InstanceDescription>Creates a box primitive</InstanceDescription>
+      <MutualData>
+        <InputParameters>
+          <Parameter InstanceGuid="e5f6a7b8-5555-6666-7777-88889999aaaa" Name="B" NickName="B" Description="Base plane" Optional="False" Access="Item" TypeHint="Rhino.Geometry.Plane" />
+          <Parameter InstanceGuid="f6a7b8c9-6666-7777-8888-9999aaaabbbb" Name="X" NickName="X" Description="X dimension" Optional="False" Access="Item" TypeHint="System.Double" />
+          <Parameter InstanceGuid="a7b8c9d0-7777-8888-9999-aaaabbbbcccc" Name="Y" NickName="Y" Description="Y dimension" Optional="False" Access="Item" TypeHint="System.Double" />
+          <Parameter InstanceGuid="b8c9d0e1-8888-9999-aaaa-bbbbccccdddd" Name="Z" NickName="Z" Description="Z dimension" Optional="False" Access="Item" TypeHint="System.Double" />
+        </InputParameters>
+        <OutputParameters>
+          <Parameter InstanceGuid="c9d0e1f2-9999-aaaa-bbbb-ccccddddeeee" Name="B" NickName="B" Description="Resulting box" Optional="False" Access="Item" TypeHint="Rhino.Geometry.Box" />
+        </OutputParameters>
+      </MutualData>
+    </Fields>
+    <Sources>
+      <Source Source="b2c3d4e5-2222-3333-4444-555566667777" Target="f6a7b8c9-6666-7777-8888-9999aaaabbbb" />
+      <Source Source="a1b2c3d4-1111-2222-3333-444455556666" Target="a7b8c9d0-7777-8888-9999-aaaabbbbcccc" />
+      <Source Source="c3d4e5f6-3333-4444-5555-666677778888" Target="b8c9d0e1-8888-9999-aaaa-bbbbccccdddd" />
+    </Sources>
+  </Object>
+  <Object type="GH_Component" name="Deconstruct Box" InstanceGuid="e9f0a1b2-aaaa-bbbb-cccc-ddddeeeeffff">
+    <Fields>
+      <Name>Deconstruct Box</Name>
+      <NickName>DeB</NickName>
+      <Description>Deconstruct a box into its faces</Description>
+      <Category>Surface</Category>
+      <SubCategory>Analysis</SubCategory>
+      <InstanceDescription>Get the 6 faces of the box</InstanceDescription>
+      <MutualData>
+        <InputParameters>
+          <Parameter InstanceGuid="f0a1b2c3-bbbb-cccc-dddd-eeeeffff0000" Name="B" NickName="B" Description="Box to deconstruct" Optional="False" Access="Item" TypeHint="Rhino.Geometry.Box" />
+        </InputParameters>
+        <OutputParameters>
+          <Parameter InstanceGuid="a1b2c3d4-cccc-dddd-eeee-ffff00001111" Name="F" NickName="F" Description="Box faces" Optional="False" Access="List" TypeHint="Rhino.Geometry.BrepFace" />
+        </OutputParameters>
+      </MutualData>
+    </Fields>
+    <Sources>
+      <Source Source="d4e5f6a7-4444-5555-6666-777788889999" Target="f0a1b2c3-bbbb-cccc-dddd-eeeeffff0000" />
+    </Sources>
+  </Object>
+  <Object type="GH_Component" name="Brep Join" InstanceGuid="f1a2b3c4-dddd-eeee-ffff-000011112222">
+    <Fields>
+      <Name>Brep Join</Name>
+      <NickName>Join</NickName>
+      <Description>Join faces into a closed Brep</Description>
+      <Category>Surface</Category>
+      <SubCategory>Util</SubCategory>
+      <InstanceDescription>Join box faces into a solid</InstanceDescription>
+      <MutualData>
+        <InputParameters>
+          <Parameter InstanceGuid="b2c3d4e5-eeee-ffff-0000-111122223333" Name="B" NickName="B" Description="Breps to join" Optional="False" Access="List" TypeHint="Rhino.Geometry.Brep" />
+        </InputParameters>
+        <OutputParameters>
+          <Parameter InstanceGuid="c3d4e5f6-ffff-0000-1111-222233334444" Name="B" NickName="B" Description="Joined Breps" Optional="False" Access="List" TypeHint="Rhino.Geometry.Brep" />
+        </OutputParameters>
+      </MutualData>
+    </Fields>
+    <Sources>
+      <Source Source="e9f0a1b2-aaaa-bbbb-cccc-ddddeeeeffff" Target="b2c3d4e5-eeee-ffff-0000-111122223333" />
+    </Sources>
+  </Object>
+  <Object type="GH_Component" name="Geometry" InstanceGuid="d5e6f7a8-0000-1111-2222-333344445555">
+    <Fields>
+      <Name>Box Geometry</Name>
+      <NickName>geometry</NickName>
+      <Description>Output geometry for Compute</Description>
+      <Category>Params</Category>
+      <SubCategory>Output</SubCategory>
+      <MutualData>
+        <Access>Item</Access>
+        <TypeHint>Rhino.Geometry.GeometryBase</TypeHint>
+        <Optional>False</Optional>
+      </MutualData>
+    </Fields>
+    <Sources>
+      <Source Source="f1a2b3c4-dddd-eeee-ffff-000011112222" Target="d5e6f7a8-0000-1111-2222-333344445555" />
+    </Sources>
+  </Object>
+</Archive>
