@@ -6,7 +6,7 @@ Usage in Rhino 8:
 1. Open Rhino 8
 2. Run: `EditPythonScript` (or `RunPythonScript`)
 3. Select this file
-4. It will create three .gh files in C:\MARLIN\definitions\
+4. It will create three .gh files in C:\\MARLIN\\definitions\\
 
 Requires: Rhino 8 + Grasshopper (built-in), no third-party plugins.
 """
@@ -16,7 +16,7 @@ import sys
 import clr
 
 # Add RhinoCommon and Grasshopper references
-rhino_dir = r"C:\Program Files\Rhino 8\System"
+rhino_dir = r"C:\\Program Files\\Rhino 8\\System"
 sys.path.append(rhino_dir)
 clr.AddReference("RhinoCommon")
 clr.AddReference("Grasshopper")
@@ -459,7 +459,7 @@ def build_marlin_hull(doc):
 # ============================================================
 
 def main():
-    out_dir = r"C:\MARLIN\definitions"
+    out_dir = r"C:\\MARLIN\\definitions"
     os.makedirs(out_dir, exist_ok=True)
     
     print("=" * 60)
