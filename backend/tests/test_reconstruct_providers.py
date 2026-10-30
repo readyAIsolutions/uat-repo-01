@@ -128,14 +128,19 @@ def test_worker_passes_timeout_and_metadata_to_provider(work_env, tmp_path):
     assert len(paths) == 1
 
 
-def test_unconfigured_provider_fails_job_honestly(work_env, tmp_path):
+def test_unconfigured_provider_refuses_submission(work_env, tmp_path):
+    """An unconfigured provider refuses jobs at submission (503, no silent
+    accept-then-fail), while the worker still handles runtime failures."""
     service = ReconstructionService(storage_dir=tmp_path,
                                     environment="development")
     service._provider = FailingConfiguredProvider()  # noqa: SLF001
-    job_id = _submit(service, tmp_path)
-    job = _wait_terminal(service, job_id)
-    assert job.status.value == "failed"
-    assert "no GPU on this host" in (job.error or "")
+    from app.services.reconstruct.validation import UploadedFile
+    body, status = service.create_job(
+        [UploadedFile("p.jpg", make_image("JPEG"))])
+    assert status == 503
+    assert "no GPU on this host" in body["detail"]
+    # No job row was created for a refused submission.
+    assert service.jobs.list() == []
 
 
 def test_provider_raise_auth_fails_job(work_env, tmp_path):

@@ -135,6 +135,16 @@ class ReconstructionService:
         if not validated:
             return {"detail": "no valid photographs provided"}, 422
 
+        # Refuse at submission when the provider cannot possibly run (hard
+        # config errors, e.g. mock in production) — never accept then fail.
+        try:
+            provider = self.provider()
+            problem = provider.configuration_problem()
+        except ProviderNotAllowed as exc:
+            return {"detail": str(exc)}, 503
+        if problem:
+            return {"detail": f"reconstruction provider unavailable: {problem}"}, 503
+
         metadata = JobMetadata(
             vessel_length_m=vessel_length_m,
             vessel_beam_m=vessel_beam_m,

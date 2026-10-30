@@ -100,8 +100,9 @@ async def create_job(request: Request,
         vessel_beam_m=vessel_beam_m,
         reference_note=reference_note)
     if status != 201:
-        code = "IMAGE_VALIDATION_FAILED" if status == 422 else \
-            "IMAGE_LIMIT_EXCEEDED"
+        code = "PROVIDER_UNAVAILABLE" if status == 503 else \
+            ("IMAGE_VALIDATION_FAILED" if status == 422 else
+             "IMAGE_LIMIT_EXCEEDED")
         return _reject(status, code,
                        body.get("detail", "invalid submission"),
                        body.get("problems"))

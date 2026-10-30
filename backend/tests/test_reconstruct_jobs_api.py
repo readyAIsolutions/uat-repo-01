@@ -169,6 +169,29 @@ def test_capabilities_reports_mock_and_simulation_flag(mock_client):
     assert body["simulated_available"] is True
 
 
+def test_production_refuses_mock_submission(monkeypatch):
+    """The labelled mock can NEVER accept jobs in production."""
+    monkeypatch.setenv("MARLIN_ENVIRONMENT", "production")
+    monkeypatch.setenv("RECONSTRUCTION_PROVIDER", "mock")
+    from app.mvp import create_app
+    with TestClient(create_app()) as client:
+        caps = client.get("/api/reconstruct/capabilities").json()
+        assert caps["configured"] is False
+        r = client.post("/api/reconstruct/jobs", files=_files("a.jpg"))
+        assert r.status_code == 503
+        assert r.json()["error"]["code"] == "PROVIDER_UNAVAILABLE"
+
+
+def test_unconfigured_trellis_refuses_submission(monkeypatch):
+    monkeypatch.setenv("RECONSTRUCTION_PROVIDER", "trellis")
+    monkeypatch.delenv("RECONSTRUCTION_TRELLIS_PYTHON", raising=False)
+    from app.mvp import create_app
+    with TestClient(create_app()) as client:
+        r = client.post("/api/reconstruct/jobs", files=_files("a.jpg"))
+        assert r.status_code == 503
+        assert r.json()["error"]["code"] == "PROVIDER_UNAVAILABLE"
+
+
 def test_unknown_job_404(mock_client):
     assert mock_client.get(
         "/api/reconstruct/jobs/00000000-0000-0000-0000-000000000000"
