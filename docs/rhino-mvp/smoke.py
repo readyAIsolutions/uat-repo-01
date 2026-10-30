@@ -53,7 +53,7 @@ def _run_scenario(extra_env: dict, expected_stations_code: str) -> dict:
                     raise RuntimeError("Uvicorn exited before readiness")
                 try:
                     with opener.open(base + "/health", timeout=1) as response:
-                        assert json.load(response) == {"status": "ok", "service": "marlin-rhino-mvp"}
+                        assert json.load(response) == {"status": "ok", "service": "vesyntra-rhino-mvp"}
                     break
                 except (urllib.error.URLError, TimeoutError):
                     if time.monotonic() >= deadline:

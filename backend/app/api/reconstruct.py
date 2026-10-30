@@ -175,7 +175,7 @@ def _download(service: ReconstructionService, job_id: str,
     media = {"glb": "model/gltf-binary", "obj": "text/plain"}[format]
     from fastapi.responses import FileResponse
     return FileResponse(path, media_type=media,
-                        filename=f"marlin-{job_id[:8]}.{format}")
+                        filename=f"vesyntra-{job_id[:8]}.{format}")
 
 
 @router.get("/jobs/{job_id}/images/{idx}")

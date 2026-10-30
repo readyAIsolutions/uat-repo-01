@@ -22,7 +22,7 @@ and cad_files=[]; they do not produce fake CAD files.
 
 The only application endpoint is GET /health:
 
-    {"status":"ok","service":"marlin-rhino-mvp"}
+    {"status":"ok","service":"vesyntra-rhino-mvp"}
 
 This is process health, NOT evidence of Rhino connectivity. Standard /docs,
 /redoc, /docs/oauth2-redirect and /openapi.json remain available. There are no
