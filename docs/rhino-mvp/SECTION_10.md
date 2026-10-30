@@ -138,7 +138,7 @@ cd TRELLIS && . ./setup.sh --new-env --basic --xformers --flash-attn
 # 2. Copy the entrypoint + model into the env:
 cp <repo>/reconstruction/trellis_entrypoint.py ~/TRELLIS/
 
-# 3. Run MARLIN with the real engine:
+# 3. Run VESYNTRA with the real engine (env identifiers keep the legacy MARLIN_ prefix for compatibility):
 RECONSTRUCTION_PROVIDER=trellis \
 RECONSTRUCTION_TRELLIS_PYTHON=~/miniconda3/envs/trellis/bin/python \
 MARLIN_ENVIRONMENT=production \

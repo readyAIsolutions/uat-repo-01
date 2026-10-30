@@ -1,9 +1,11 @@
-# MARLIN — Rhino Compute MVP (9 modules)
+# VESYNTRA — Rhino Compute MVP (AIMBEX Technologies)
 
-Working MARLIN Rhino MVP: a Python/FastAPI service that takes validated vessel
+**VESYNTRA** (previously codenamed **MARLIN**) — "The Intelligence Behind Every
+Vessel" — is the marine-design AI platform from AIMBEX Technologies. This repo
+holds the Rhino MVP: a Python/FastAPI service that takes validated vessel
 geometry and produces parametric NURBS hull geometry by driving a licensed
 **Rhino.Compute** node (real Rhino 8 running on Windows) plus real `.3dm` export
-via `rhino3dm`. Contains **only** the 9 Rhino modules — the legacy full-stack
+via `rhino3dm`. Contains **only** the Rhino modules — the legacy full-stack
 app (`app/main.py`, Next.js frontend, SQL/email/compliance stack) is deliberately
 excluded.
 

@@ -1,4 +1,5 @@
-"""Isolated MARLIN Rhino MVP, Section 1 only."""
+"""Isolated VESYNTRA Rhino MVP, Section 1 only (VESYNTRA = the marine-design AI
+platform by AIMBEX Technologies; formerly codenamed MARLIN)."""
 from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI
@@ -47,7 +48,7 @@ def create_app(*, env_file: str | Path | None = None) -> FastAPI:
         finally:
             app.state.started = False
 
-    app = FastAPI(title="MARLIN Rhino MVP", version="0.1.0", lifespan=lifespan)
+    app = FastAPI(title="VESYNTRA — Marine Design AI (Rhino MVP)", version="0.1.0", lifespan=lifespan)
     app.state.settings = settings
     app.state.rhino_service = _build_rhino_service(settings)
     # Module 10: image-to-3D reconstruction service (additive; isolated).
@@ -64,7 +65,7 @@ def create_app(*, env_file: str | Path | None = None) -> FastAPI:
 
     @app.get("/health")
     async def health():
-        return {"status": "ok", "service": "marlin-rhino-mvp"}
+        return {"status": "ok", "service": "vesyntra-rhino-mvp"}
 
     # Section 7: same-origin functional UI (kept out of the OpenAPI surface).
     if UI_DIR.is_dir():

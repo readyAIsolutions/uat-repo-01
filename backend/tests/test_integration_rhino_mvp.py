@@ -1,4 +1,4 @@
-"""Section 8 — full-chain integration test for the MARLIN Rhino MVP.
+"""Section 8 — full-chain integration test for the VESYNTRA Rhino MVP.
 
 Exercises the whole MVP chain through the ASGI app against a loopback
 Rhino-shaped stub (NOT real Rhino): health -> rhino status -> validate ->

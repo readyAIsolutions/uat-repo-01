@@ -3,8 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MARLIN — Section 7 UI</title>
+  <title>VESYNTRA — Marine Design AI</title>
   <link rel="stylesheet" href="/ui/styles.css" />
+  <style>
+    a.v-link { display: inline-block; padding: 8px 12px; background: #21262d; color: #e6edf3;
+               border: 1px solid #30363d; border-radius: 4px; text-decoration: none; }
+    a.v-link:hover { background: #30363d; }
+    .tagline { font-size: 12px; color: #8b94a3; letter-spacing: 1px; margin: 2px 0 0 2px; }
+  </style>
   <script type="importmap">
     {
       "imports": {
@@ -16,7 +22,10 @@
 </head>
 <body>
   <header class="topbar">
-    <h1>MARLIN</h1>
+    <div>
+      <h1>VESYNTRA</h1>
+      <p class="tagline">THE INTELLIGENCE BEHIND EVERY VESSEL · AN AIMBEX TECHNOLOGIES PLATFORM</p>
+    </div>
     <div class="rhino">
       <span>Rhino:</span>
       <span id="rhino-pill" class="pill not-checked" data-state="NOT_CHECKED">● NOT CHECKED</span>
@@ -25,8 +34,16 @@
 
   <main class="grid">
     <section class="panel">
+      <h2>Image → 3D Model</h2>
+      <p class="hint">Turn boat photographs into a viewable, downloadable 3D mesh — ready to open in Rhino as polygonal reference geometry (GLB / OBJ).</p>
+      <div class="buttons">
+        <a href="/reconstruct" class="v-link">OPEN 3D MODEL VIEWER →</a>
+      </div>
+    </section>
+
+    <section class="panel">
       <h2>Vessel Parameters</h2>
-      <label>Project Name <input id="project-name" type="text" value="MARLIN TEST 001" /></label>
+      <label>Project Name <input id="project-name" type="text" value="VESYNTRA TEST 001" /></label>
       <div class="row"><label>LOA (m) <input id="loa" type="number" step="0.1" value="20.0" /></label>
       <label>LWL (m) <input id="lwl" type="number" step="0.1" value="18.5" /></label></div>
       <div class="row"><label>Beam (m) <input id="beam" type="number" step="0.1" value="5.5" /></label>

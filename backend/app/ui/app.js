@@ -1,4 +1,4 @@
-// MARLIN Section 7 UI — function-first, same-origin, no secrets in the browser.
+// VESYNTRA Section 7 UI — function-first, same-origin, no secrets in the browser.
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -153,7 +153,7 @@ function errorMessage(data) {
   return (data && data.error && data.error.message) || "Request failed";
 }
 
-// ---- 3D preview (derived from the station definitions MARLIN computed) ----
+// ---- 3D preview (derived from the station definitions VESYNTRA computed) ----
 let renderer, scene, camera, controls;
 
 function ensureViewer() {

@@ -1,4 +1,4 @@
-// MARLIN Module 10 — image-to-3D workflow controller (new page, additive).
+// VESYNTRA Module 10 — image-to-3D workflow controller (new page, additive).
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";

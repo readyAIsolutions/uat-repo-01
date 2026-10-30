@@ -38,7 +38,7 @@ All facts below were checked against primary sources on 2026-10-30
 ## Decision
 
 TRELLIS is the initial provider: real single-/multi-image input, mesh +
-GLB output, self-hosted (no keys/costs, fits MARLIN's on-prem philosophy),
+GLB output, self-hosted (no keys/costs, fits VESYNTRA's on-prem philosophy),
 runnable on a workstation-class GPU (the Dell or a rented g5 instance).
 Provider adapter interface (`ReconstructionProvider` ABC) means Tripo3D or
 any later engine slots in by implementing 3 methods and setting
