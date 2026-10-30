@@ -46,10 +46,17 @@ def test_ui_is_absent_from_openapi_surface():
     with _client() as client:
         paths = set(client.get("/openapi.json").json()["paths"])
     assert "/" not in paths and "/ui/app.js" not in paths
+    assert "/reconstruct" not in paths  # Module 10 UI page is also UI, not API
     assert paths == {"/health", "/api/rhino/status", "/api/rhino/box",
         "/api/vessel/hull/3dm/{name}",
                      "/api/rhino/capabilities", "/api/vessel/validate",
-                     "/api/vessel/stations", "/api/vessel/hull"}
+                     "/api/vessel/stations", "/api/vessel/hull",
+                     "/api/reconstruct/capabilities", "/api/reconstruct/jobs",
+                     "/api/reconstruct/jobs/{job_id}",
+                     "/api/reconstruct/jobs/{job_id}/cancel",
+                     "/api/reconstruct/jobs/{job_id}/model",
+                     "/api/reconstruct/jobs/{job_id}/export",
+                     "/api/reconstruct/jobs/{job_id}/images/{idx}"}
 
 
 def test_no_secrets_reach_the_browser(monkeypatch):

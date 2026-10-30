@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MARLIN — Module 10: Image to 3D</title>
+  <link rel="stylesheet" href="/ui/styles.css" />
+  <style>
+    :root { --m10-accent: #22c55e; --m10-warn: #f59e0b; --m10-err: #ef4444; }
+    body { padding: 0 0 4rem 0; }
+    .m10-grid { display: grid; grid-template-columns: 380px 1fr; gap: 1rem; padding: 1rem; align-items: start; }
+    @media (max-width: 1000px) { .m10-grid { grid-template-columns: 1fr; } }
+    .panel { background: #16181d; border: 1px solid #2a2e37; border-radius: 10px; padding: 1rem; }
+    .drop { border: 2px dashed #3a4150; border-radius: 10px; padding: 1.2rem; text-align: center; color: #9aa3b2; cursor: pointer; }
+    .drop.over { border-color: var(--m10-accent); background: rgba(34,197,94,.06); }
+    .thumbs { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .6rem; }
+    .thumbs figure { margin: 0; position: relative; }
+    .thumbs img { width: 88px; height: 88px; object-fit: cover; border-radius: 6px; border: 1px solid #2a2e37; }
+    .thumbs figcaption { font-size: 10px; color: #7c8594; text-align: center; max-width: 88px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    input[type="number"], input[type="text"] { width: 100%; box-sizing: border-box; }
+    .row { display: flex; gap: .6rem; }
+    .row label { flex: 1; }
+    #banner { display: none; margin-top: .6rem; padding: .5rem .7rem; border-radius: 8px; font-size: 13px; }
+    #banner.sim { display: block; background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.4); color: var(--m10-warn); }
+    #banner.err { display: block; background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.4); color: var(--m10-err); }
+    #viewer { width: 100%; height: 560px; border-radius: 8px; background: radial-gradient(circle at 50% 40%, #1c2027, #0d0f13); display: block; }
+    .viewer-tools { display: flex; gap: .5rem; margin-top: .6rem; flex-wrap: wrap; }
+    button { padding: .45rem .8rem; border-radius: 8px; border: 1px solid #2a2e37; background: #1f232b; color: #e6e9ef; cursor: pointer; }
+    button:hover:not(:disabled) { border-color: var(--m10-accent); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    button.primary { background: var(--m10-accent); border-color: var(--m10-accent); color: #08120b; font-weight: 600; }
+    .kv { font-size: 13px; }
+    .kv dt { color: #8b94a3; }
+    .kv dd { margin: 0 0 .35rem 0; font-family: ui-monospace, monospace; }
+    .warnings li { color: var(--m10-warn); }
+    .errors li { color: var(--m10-err); }
+    #provider-pill { font-size: 12px; padding: .2rem .5rem; border-radius: 999px; border: 1px solid #2a2e37; }
+    #provider-pill.ok { color: var(--m10-accent); border-color: rgba(34,197,94,.4); }
+    #provider-pill.bad { color: var(--m10-err); border-color: rgba(239,68,68,.4); }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "/ui/vendor/three.module.js",
+        "three/addons/controls/OrbitControls.js": "/ui/vendor/OrbitControls.js",
+        "three/addons/loaders/GLTFLoader.js": "/ui/vendor/GLTFLoader.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <h1>MARLIN <span style="font-weight:400;color:#8b94a3">/ Module 10 — Image to 3D</span></h1>
+    <div>
+      <span>Engine:</span>
+      <span id="provider-pill" class="bad">CHECKING…</span>
+    </div>
+    <a href="/" style="color:#8b94a3;font-size:13px;margin-left:auto">← Back to Module 1–9 UI</a>
+  </header>
+
+  <div class="m10-grid">
+    <section class="panel">
+      <h2>1 · Photographs</h2>
+      <div class="drop" id="drop">
+        <p>Drop boat photos here, or click to browse</p>
+        <p style="font-size:12px;color:#7c8594">JPEG · PNG · WebP — one or many angles<br/>Up to 10 files, 10&nbsp;MB each</p>
+      </div>
+      <input id="file-input" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" multiple hidden />
+      <div class="thumbs" id="thumbs"></div>
+
+      <h2 style="margin-top:1rem">2 · Reference (optional)</h2>
+      <div class="row">
+        <label>Length (m) <input id="vessel-length" type="number" step="0.1" min="0" placeholder="e.g. 12.5" /></label>
+        <label>Beam (m) <input id="vessel-beam" type="number" step="0.1" min="0" placeholder="e.g. 4.2" /></label>
+      </div>
+      <label style="margin-top:.5rem">Reference note
+        <input id="reference-note" type="text" placeholder="e.g. length measured gunwale to gunwale" />
+      </label>
+
+      <div class="viewer-tools" style="margin-top:1rem">
+        <button id="btn-submit" class="primary" disabled>START RECONSTRUCTION</button>
+      </div>
+      <div id="banner"></div>
+      <p id="job-status" class="job-status" style="margin-top:.6rem"></p>
+
+      <h2 style="margin-top:1rem">Job</h2>
+      <dl class="kv">
+        <dt>Job ID</dt><dd id="out-job">—</dd>
+        <dt>Status</dt><dd id="out-status">—</dd>
+        <dt>Engine</dt><dd id="out-engine">—</dd>
+        <dt>Mesh</dt><dd id="out-mesh">—</dd>
+      </dl>
+      <div class="viewer-tools">
+        <button id="btn-dl-glb" disabled>⬇ Download GLB</button>
+        <button id="btn-dl-obj" disabled>⬇ Download OBJ</button>
+        <button id="btn-dl-orig" disabled>⬇ Original model</button>
+      </div>
+      <h3>Warnings</h3>
+      <ul id="out-warnings" class="warnings"><li>—</li></ul>
+      <h3>Errors</h3>
+      <ul id="out-errors" class="errors"><li>—</li></ul>
+    </section>
+
+    <section class="panel">
+      <h2>3 · Reconstructed model</h2>
+      <canvas id="viewer"></canvas>
+      <div class="viewer-tools">
+        <button id="btn-reset">Reset camera</button>
+        <button id="btn-zoom-in">Zoom +</button>
+        <button id="btn-zoom-out">Zoom −</button>
+        <span style="font-size:12px;color:#7c8594;align-self:center">drag = rotate · wheel = zoom · right-drag = pan</span>
+      </div>
+      <p class="hint" style="margin-top:.5rem">
+        Polygonal reference mesh from the reconstruction engine. This is NOT
+        manufacturing-ready NURBS CAD — a later module converts it to editable
+        Rhino geometry.
+      </p>
+    </section>
+  </div>
+
+  <script type="module" src="/ui/reconstruct.js"></script>
+</body>
+</html>

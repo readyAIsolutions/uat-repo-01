@@ -34,8 +34,9 @@ print('ISOLATION_OK')
 
 
 def test_public_routes_are_the_documented_surface():
-    # Section 3 adds the /api/rhino/* surface (Section 1 deferred it). This
-    # asserts the exact intended public surface so new routes cannot slip in.
+    # Section 3 adds the /api/rhino/* surface (Section 1 deferred it).
+    # Module 10 adds the /api/reconstruct/* surface. This asserts the exact
+    # intended public surface so new routes cannot slip in.
     from app.mvp import create_app
     with TestClient(create_app()) as client:
         assert client.get("/docs").status_code == 200
@@ -49,5 +50,12 @@ def test_public_routes_are_the_documented_surface():
             "/api/vessel/stations",
             "/api/vessel/hull",
             "/api/vessel/hull/3dm/{name}",
+            "/api/reconstruct/capabilities",
+            "/api/reconstruct/jobs",
+            "/api/reconstruct/jobs/{job_id}",
+            "/api/reconstruct/jobs/{job_id}/cancel",
+            "/api/reconstruct/jobs/{job_id}/model",
+            "/api/reconstruct/jobs/{job_id}/export",
+            "/api/reconstruct/jobs/{job_id}/images/{idx}",
         }
         assert client.get("/api/rhino/nope").status_code == 404

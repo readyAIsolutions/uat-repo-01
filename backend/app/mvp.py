@@ -29,6 +29,8 @@ def _build_rhino_service(settings):
 from .core.http import SafeRequestMiddleware, install_error_handlers
 from .api.rhino import router as rhino_router
 from .api.vessel import router as vessel_router
+from .api.reconstruct import router as reconstruct_router
+from .api.reconstruct import build_reconstruction_service
 
 
 UI_DIR = Path(__file__).resolve().parent / "ui"
@@ -48,10 +50,16 @@ def create_app(*, env_file: str | Path | None = None) -> FastAPI:
     app = FastAPI(title="MARLIN Rhino MVP", version="0.1.0", lifespan=lifespan)
     app.state.settings = settings
     app.state.rhino_service = _build_rhino_service(settings)
+    # Module 10: image-to-3D reconstruction service (additive; isolated).
+    app.state.reconstruction_service = build_reconstruction_service(
+        storage_dir=settings.marlin_storage_dir,
+        environment=settings.environment,
+    )
     app.state.started = False
     install_error_handlers(app)
     app.include_router(rhino_router)
     app.include_router(vessel_router)
+    app.include_router(reconstruct_router)
     app.add_middleware(SafeRequestMiddleware, log_level=settings.log_level)
 
     @app.get("/health")
@@ -65,5 +73,9 @@ def create_app(*, env_file: str | Path | None = None) -> FastAPI:
         @app.get("/", include_in_schema=False)
         async def ui_index():
             return FileResponse(UI_DIR / "index.html")
+
+        @app.get("/reconstruct", include_in_schema=False)
+        async def ui_reconstruct():
+            return FileResponse(UI_DIR / "reconstruct.html")
 
     return app

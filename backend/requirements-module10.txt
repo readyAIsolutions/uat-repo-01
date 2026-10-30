@@ -1,0 +1,7 @@
+# Module 10 (image-to-3D) — ADDITIVE runtime requirements.
+# Reuses the existing pinned MVP core; adds only image/mesh handling.
+-r requirements-mvp.txt
+
+trimesh==4.5.0        # mesh validation + GLB/OBJ export (Section 10)
+pillow==10.4.0        # image decode/validation (Section 10)
+python-multipart==0.0.12  # multipart upload parsing (Section 10; 0.0.12+ fixes DoS advisories)
